@@ -1,8 +1,4 @@
-import {
-  useRef,
-  useState,
-  type FormEvent,
-} from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 const Form = () => {
   const [person, setPerson] = useState({
@@ -13,7 +9,7 @@ const Form = () => {
   //   name: "",
   //   age: 0,
   // };
-  console.log("rendering")
+  console.log("rendering");
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     console.log(person);
@@ -24,13 +20,29 @@ const Form = () => {
         <label htmlFor="name" className="form-label">
           Name
         </label>
-        <input onChange={(event)=> setPerson({...person, name: event.target.value})} id="name" type="text" className="form-control" />
+        <input
+          onChange={(event) =>
+            setPerson({ ...person, name: event.target.value })
+          }
+          id="name"
+          type="text"
+          className="form-control"
+          value = {person.name}
+        />
       </div>
       <div className="mb-5">
         <label htmlFor="age" className="form-label">
           Age
         </label>
-        <input onChange={(event) => setPerson({...person, age: parseInt(event.target.value)})} id="age" type="number" className="form-control" />
+        <input
+          onChange={(event) =>
+            setPerson({ ...person, age: parseInt(event.target.value) })
+          }
+          id="age"
+          type="number"
+          className="form-control"
+          value={person.age}
+        />
       </div>
       <button className="btn btn-primary" type="submit">
         Submit
