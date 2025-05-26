@@ -3,8 +3,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
-  name: z.string().min(4, {"message": "Name must atleast be 4 characters"}).max(30),
-  age: z.number().min(10),
+  name: z
+    .string()
+    .min(4, { message: "Name must atleast be 4 characters." })
+    .max(30),
+  age: z
+    .number({ invalid_type_error: "Age field is Required." })
+    .min(18, { message: "Age must be al" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -13,7 +18,7 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   console.log(errors);
@@ -32,25 +37,23 @@ const Form = () => {
           type="text"
           className="form-control"
         />
-        {errors.name && 
+        {errors.name && (
           <p className="text text-danger">{errors.name.message}</p>
-        }
+        )}
       </div>
       <div className="mb-5">
         <label htmlFor="age" className="form-label">
           Age
         </label>
         <input
-          {...register("age", {valueAsNumber: true})}
+          {...register("age", { valueAsNumber: true })}
           id="age"
           type="number"
           className="form-control"
         />
-        {errors.age && 
-          <p className="text text-danger">{errors.age.message}</p>
-        }
+        {errors.age && <p className="text text-danger">{errors.age.message}</p>}
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button disabled={!isValid} className="btn btn-primary" type="submit">
         Submit
       </button>
     </form>
