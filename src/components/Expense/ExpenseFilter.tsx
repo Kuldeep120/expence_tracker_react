@@ -2,30 +2,25 @@ import React from "react";
 
 interface Props {
   catFilters: string[];
-  onChangeFilter: () => void;
+  onChangeFilter: (filter: string) => void;
 }
 
 const ExpenseFilter = ({ catFilters, onChangeFilter }: Props) => {
   return (
     <>
-      <div className="dropdown">
-        <button
-          className="btn btn-secondary dropdown-toggle"
-          type="button"
-          id="dropdownMenu2"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Select Category
-        </button>
-        <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <div className="mb-5">
+        <select
+          id="category"
+          className="form-select"
+          aria-label="All Categories"
+        onChange={(event) => onChangeFilter(event.target.value)}>
+          <option value="all" selected>
+            All Categories
+          </option>
           {catFilters.map((catFilter) => (
-            <button className="dropdown-item" type="button">
-              {catFilter}
-            </button>
+            <option value={catFilter}>{catFilter}</option>
           ))}
-        </div>
+        </select>
       </div>
     </>
   );

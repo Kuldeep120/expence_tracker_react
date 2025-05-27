@@ -4,29 +4,34 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldValues } from "react-hook-form";
 
 interface Props {
-  onHandleSubmit: (data: FieldValues) => void;
+  addExpensetoList: (data: FieldValues) => void;
 }
 
 const schema = z.object({
   description: z.string().min(3).max(50),
   amount: z.number().min(1),
   category: z.string().min(3),
+//   cateogyrFixed: z.string().literal(["red", "green", "blue"]),
 });
 
-  // category: z.literal(["Groceries", "Utilities", "Entertainment"])
+// category: z.literal(["Groceries", "Utilities", "Entertainment"])
 
 type FormData = z.infer<typeof schema>;
 
-const ExpenceForm = ({ onHandleSubmit }: Props) => {
+const ExpenceForm = ({ addExpensetoList }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-
+  const onHandleSubmit = (data: FieldValues) => {
+    addExpensetoList(data)
+    reset()
+  }
   console.log(errors);
   return (
-    <div>
+    <div className="mb-5">
       <form onSubmit={handleSubmit(onHandleSubmit)}>
         <div className="mb-5">
           <label htmlFor="description" className="form-label">
@@ -47,7 +52,7 @@ const ExpenceForm = ({ onHandleSubmit }: Props) => {
             amount
           </label>
           <input
-            {...register("amount",{valueAsNumber: true})}
+            {...register("amount", { valueAsNumber: true })}
             id="amount"
             type="number"
             className="form-control"
@@ -84,3 +89,4 @@ const ExpenceForm = ({ onHandleSubmit }: Props) => {
 };
 
 export default ExpenceForm;
+// export default FormData;
