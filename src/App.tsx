@@ -1,18 +1,20 @@
 import { useState } from "react";
 import "./App.css";
-import ExpenceForm from "./components/Expense/ExpenceForm";
+import ExpenceForm, {type FormData} from "./components/Expense/ExpenceForm";
 import { type FieldValues } from "react-hook-form";
 import ExpenseList from "./components/Expense/ExpenseList";
 
+export const categories = ["Groceries", "Utilities", "Entertainment"] as const;
+
 function App() {
-  const [expenses, setExpenses] = useState([
+  const [expenses, setExpenses] = useState<FormData[]>([
     { id: 1, description: "Gas", amount: 100, category: "Utilities" },
     { id: 1, description: "Gas", amount: 200, category: "Utilities" },
   ]);
   const addExpensetoList = (data: FieldValues) => {
     console.log(data);
     const expenseItem = {
-      id: expenses.length +1 ,
+      id: expenses.length + 1,
       description: String(data.description),
       amount: parseInt(data.amount),
       category: String(data.category),
@@ -20,9 +22,7 @@ function App() {
     setExpenses([...expenses, expenseItem]);
   };
   const deleteExpenseFromList = (id: number) => {
-    const newExpenseList = expenses.filter(
-      (expense) => id !== expense.id
-    );
+    const newExpenseList = expenses.filter((expense) => id !== expense.id);
     setExpenses(newExpenseList);
   };
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldValues } from "react-hook-form";
+import { categories } from "../../App";
 
 interface Props {
   addExpensetoList: (data: FieldValues) => void;
@@ -9,14 +10,15 @@ interface Props {
 
 const schema = z.object({
   description: z.string().min(3).max(50),
-  amount: z.number().min(1),
-  category: z.string().min(3),
+  amount: z.number().min(.01).max(100_000),
+  // category: z.string().min(3),
+  category: z.enum(categories)
 //   cateogyrFixed: z.string().literal(["red", "green", "blue"]),
 });
 
 // category: z.literal(["Groceries", "Utilities", "Entertainment"])
 
-type FormData = z.infer<typeof schema>;
+export type FormData = z.infer<typeof schema>;
 
 const ExpenceForm = ({ addExpensetoList }: Props) => {
   const {
@@ -72,9 +74,7 @@ const ExpenceForm = ({ addExpensetoList }: Props) => {
             aria-label="Default select example"
           >
             <option selected></option>
-            <option value="Groceries">Groceries</option>
-            <option value="Utilities">Utilities</option>
-            <option value="Entertainment">Entertainment</option>
+            {categories.map((category) =>  <option value={category}>{category}</option>)}
           </select>
           {errors.category && (
             <p className="text text-danger">{errors.category.message}</p>
